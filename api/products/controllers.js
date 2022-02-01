@@ -1,4 +1,4 @@
-const Product = require('../../models/Product');
+const Product = require("../../models/Product");
 
 exports.getProducts = async (req, res) => {
   try {
@@ -25,7 +25,7 @@ exports.productDelete = async (req, res) => {
       foundProduct.remove();
       return res.status(204).end();
     } else {
-      next({ status: 404, message: 'Product Not Found' });
+      next({ status: 404, message: "Product Not Found" });
     }
   } catch (error) {
     next(error);
@@ -40,8 +40,22 @@ exports.productUpdate = async (req, res) => {
       await foundProduct.updateOne(req.body, { new: true });
       return res.json(foundProduct);
     } else {
-      next({ status: 404, message: 'Product Not Found' });
+      next({ status: 404, message: "Product Not Found" });
     }
+  } catch (error) {
+    next(error);
+  }
+};
+
+//Create a function called fetchProduct that handles finding a product from the database by its ID
+//Function takes 2 parameters (productId and next)
+exports.fetchProduct = async (productId, next) => {
+  //In try catch statement use findById and pass it productId
+  try {
+    const foundProduct = await Product.findById(productId);
+    //Return found product
+    return foundProduct;
+    //Catch error and pass it to next to execute error handling middleware
   } catch (error) {
     next(error);
   }
